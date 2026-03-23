@@ -1,73 +1,98 @@
-# React + TypeScript + Vite
+# WeatherNow 🌤
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A real-time weather app built with React, TypeScript, and Vite. Get current conditions, hourly forecasts, and 7-day outlooks for any city in the world — no API key needed.
 
-Currently, two official plugins are available:
+**Live demo:** https://weather-app-location-chi.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Current conditions** — temperature, feels-like, humidity, wind speed/direction, UV index, pressure, visibility, cloud cover, precipitation
+- **Hourly forecast** — scrollable 24-hour timeline with temperature, weather icons, and rain probability
+- **7-day forecast** — daily high/low, sunrise/sunset, max wind, UV index, and precipitation totals
+- **Weather alerts** — displays active alerts when available for a location
+- **City search** — instant search with autocomplete powered by Open-Meteo geocoding
+- **Geolocation** — one-click detect current location via browser API (with Nominatim reverse geocoding)
+- **Search history** — up to 8 recent searches persisted in `localStorage`
+- **°C / °F toggle** — switch temperature units globally
+- **Dynamic theming** — background and color palette adapt to weather condition (clear, cloudy, rainy, snowy, etc.) and time of day (day/night)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+| | |
+|---|---|
+| Framework | React 19 |
+| Language | TypeScript 5.9 |
+| Build Tool | Vite 8 |
+| Styling | Plain CSS with CSS custom properties |
+| Weather API | [Open-Meteo](https://open-meteo.com/) (free, no key required) |
+| Geocoding | Open-Meteo Geocoding API + Nominatim (reverse geocode) |
+| Linting | ESLint + typescript-eslint |
+| Deployment | Vercel |
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── CurrentWeather.tsx   # Main weather card
+│   ├── HourlyForecast.tsx   # 24-hour scrollable strip
+│   ├── DailyForecast.tsx    # 7-day forecast list
+│   ├── SearchBar.tsx        # Search input with autocomplete
+│   ├── SearchHistory.tsx    # Recent searches panel
+│   └── WeatherAlerts.tsx    # Alert banners
+├── hooks/
+│   ├── useWeather.ts        # Weather data fetching + state + history
+│   └── useGeolocation.ts    # Browser geolocation wrapper
+├── services/
+│   └── weatherApi.ts        # Open-Meteo API calls
+├── types/
+│   └── weather.ts           # TypeScript interfaces
+└── utils/
+    ├── formatters.ts        # Date, time, unit conversion helpers
+    └── weatherCodes.ts      # WMO weather code → label, icon, theme
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Getting Started
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+# → http://localhost:5173
+
+# Type-check + build for production
+npm run build
+
+# Preview production build
+npm run preview
 ```
+
+---
+
+## APIs Used
+
+| API | Purpose | Docs |
+|-----|---------|------|
+| Open-Meteo Forecast | Current, hourly, daily weather | [open-meteo.com/en/docs](https://open-meteo.com/en/docs) |
+| Open-Meteo Geocoding | City search by name | [open-meteo.com/en/docs/geocoding-api](https://open-meteo.com/en/docs/geocoding-api) |
+| Nominatim (OSM) | Reverse geocoding (coords → city name) | [nominatim.org](https://nominatim.org/) |
+
+All APIs are free and require no authentication.
+
+---
+
+## Deployment
+
+Deployed to Vercel. Any push to `main` triggers an automatic redeploy.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Richayadav75/weather-app)
